@@ -27,3 +27,19 @@
 .drag-option {
   user-select: none;
 }
+
+.button-containers > div {
+  margin-bottom: 100px;
+}
+
+.item-button {
+  background-color: transparent;
+  border: 1 solid black;
+  outline: none;
+  box-shadow: none;
+  border-style: solid;
+}
+
+.item-button.selected {
+  border-color: lightgreen;
+}

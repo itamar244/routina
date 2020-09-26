@@ -1,89 +1,70 @@
-import React, { DragEventHandler, MouseEventHandler, ReactNode, useCallback, useState } from "react";
+import React, { DOMAttributes, MouseEventHandler, PropsWithChildren, useCallback, useState } from "react";
 import "./App.css";
 
-function DraggableButton({ children }: { children?: ReactNode }) {
-  const [position, setPosition] = useState<{
-    x?: number;
-    y?: number;
-  }>({});
-  const [isDragging, setIsDragging] = useState(false);
-  const onDrag: DragEventHandler = useCallback(
-    (event) => {
-      event.preventDefault();
-      setPosition({ x: event.clientX, y: event.clientY });
-      setIsDragging(event.clientX !== 0 || event.clientY !== 0);
-    },
-    [setPosition, setIsDragging]
-  );
+function DraggableButton({
+  id,
+  children,
+  isSelected,
+}: PropsWithChildren<{ id: string; isSelected: boolean }>) {
   return (
-    <button
-      className="drag-option"
-      draggable
-      onDrag={onDrag}
-      style={
-        isDragging
-          ? {
-              position: "absolute",
-              transform: "translate(-50%, -50%)",
-              left: position.x,
-              top: position.y,
-            }
-          : {}
-      }
-    >
+    <button data-item-id={id} className={`item-button ${isSelected ? "selected" : ""}`}>
       {children}
     </button>
   );
 }
 
-function DraggableOnHoverButton({ children }: { children?: ReactNode }) {
-  const [position, setPosition] = useState<{
-    x?: number;
-    y?: number;
-  }>({});
-  const [isDragging, setIsDragging] = useState(false);
-  const onDrag: MouseEventHandler = useCallback(
-    (event) => {
-      console.log(event.clientX);
-      event.preventDefault();
-      setPosition({ x: event.clientX, y: event.clientY });
-      setIsDragging(event.clientX !== 0 || event.clientY !== 0);
-    },
-    [setPosition, setIsDragging]
-  );
-  return (
-    <button
-      className="drag-option"
-      draggable
-      onDrag={onDrag}
-      style={
-        isDragging
-          ? {
-              position: "absolute",
-              transform: "translate(-50%, -50%)",
-              left: position.x,
-              top: position.y,
-            }
-          : {}
-      }
-    >
-      {children}
-    </button>
-  );
+function useCapture() {
+  const [capturing, setCapturing] = useState(false);
+  const startCapture = useCallback(() => {
+    setCapturing(true);
+  }, [setCapturing]);
+  const stopCapture = useCallback(() => {
+    setCapturing(false);
+  }, [setCapturing]);
+
+  return { capturing, startCapture, stopCapture };
 }
+
+const rows = [
+  ["meals", "pisses"],
+  ["3", "6"],
+];
 
 export default function App() {
+  const { capturing, startCapture, stopCapture } = useCapture();
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const onHover: MouseEventHandler = useCallback(
+    (event) => {
+      const itemId = (event.target as HTMLElement).dataset?.itemId;
+
+      if (itemId != null && !selectedIds.includes(itemId)) {
+        setSelectedIds((selectedIds) => selectedIds.concat(itemId));
+      }
+    },
+    [selectedIds, setSelectedIds],
+  );
+  console.log(selectedIds);
+
   return (
     <div className="App">
       <header className="App-header">Routina</header>
       <p>asdfasdf</p>
-      <div>
-        <DraggableButton>meals</DraggableButton>
-        <DraggableButton>pisses</DraggableButton>
-      </div>
-      <div>
-        <DraggableOnHoverButton>3</DraggableOnHoverButton>
-      </div>
+      <section
+        className="button-containers"
+        onMouseMove={capturing ? onHover : undefined}
+        onMouseDown={startCapture}
+        onMouseUp={stopCapture}
+      >
+        {rows.map((columns, i) => (
+          <div key={i}>
+            {columns.map((column) => (
+              <DraggableButton key={column} id={column} isSelected={selectedIds.includes(column)}>
+                {column}
+              </DraggableButton>
+            ))}
+          </div>
+        ))}
+      </section>
     </div>
   );
 }
