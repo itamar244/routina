@@ -1,13 +1,18 @@
-import React, { DOMAttributes, MouseEventHandler, PropsWithChildren, useCallback, useState } from "react";
-import "./App.css";
+import React, { MouseEventHandler, PropsWithChildren, useCallback, useState } from "react";
+import classnames from "classnames";
+import "./App.scss";
 
-function DraggableButton({
-  id,
-  children,
-  isSelected,
-}: PropsWithChildren<{ id: string; isSelected: boolean }>) {
+type DragableButtonProps = PropsWithChildren<{
+  id: string;
+  isSelected: boolean;
+}>;
+
+function StyledButton({ id, children, isSelected }: DragableButtonProps) {
+  const className = classnames("item-button", {
+    selected: isSelected,
+  });
   return (
-    <button data-item-id={id} className={`item-button ${isSelected ? "selected" : ""}`}>
+    <button data-item-id={id} className={className}>
       {children}
     </button>
   );
@@ -25,23 +30,29 @@ function useCapture() {
   return { capturing, startCapture, stopCapture };
 }
 
-const rows = [
-  ["meals", "pisses"],
-  ["3", "6"],
-];
+const rowTypesOrder: (keyof typeof rows)[] = ["types", "amounts", "colors"];
+
+const rows = {
+  types: ["meals", "pisses"],
+  amounts: ["a little", "medium amount", "a lot"],
+  colors: ["dark yellow", "yello", "light yello", "transparent"],
+};
 
 export default function App() {
   const { capturing, startCapture, stopCapture } = useCapture();
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [currentRowIndex, setCurrentRowIndex] = useState<number>(0);
+  const [selectedIds, setSelectedIds] = useState<Partial<Record<keyof typeof rows, string>>>({});
   const onHover: MouseEventHandler = useCallback(
-    (event) => {
+    event => {
       const itemId = (event.target as HTMLElement).dataset?.itemId;
+      const currentRow = rowTypesOrder[currentRowIndex];
 
-      if (itemId != null && !selectedIds.includes(itemId)) {
-        setSelectedIds((selectedIds) => selectedIds.concat(itemId));
+      if (itemId != null && rows[currentRow]?.includes(itemId)) {
+        setSelectedIds(selectedIds => ({ ...selectedIds, [currentRow]: itemId }));
+        setCurrentRowIndex(id => id + 1);
       }
     },
-    [selectedIds, setSelectedIds],
+    [currentRowIndex],
   );
   console.log(selectedIds);
 
@@ -55,13 +66,20 @@ export default function App() {
         onMouseDown={startCapture}
         onMouseUp={stopCapture}
       >
-        {rows.map((columns, i) => (
-          <div key={i}>
-            {columns.map((column) => (
-              <DraggableButton key={column} id={column} isSelected={selectedIds.includes(column)}>
-                {column}
-              </DraggableButton>
-            ))}
+        {rowTypesOrder.map((rowType, i) => (
+          <div key={i} className={classnames({"row-hidden": currentRowIndex !== i})}>
+            {rows[rowType].map(column => {
+              const isSelected = selectedIds[rowType] === column;
+              return (
+                <StyledButton
+                  key={column}
+                  id={column}
+                  isSelected={isSelected}
+                >
+                  {column}
+                </StyledButton>
+              );
+            })}
           </div>
         ))}
       </section>

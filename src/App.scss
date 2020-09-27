@@ -38,8 +38,12 @@
   outline: none;
   box-shadow: none;
   border-style: solid;
-}
 
-.item-button.selected {
-  border-color: lightgreen;
+  &.selected {
+    border-color: lightgreen;
+  }
+
+  .row-hidden &:not(.selected) {
+    opacity: 0;
+  }
 }
