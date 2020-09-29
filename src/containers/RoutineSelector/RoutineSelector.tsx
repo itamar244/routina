@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, PropsWithChildren, useCallback, useMemo, useState } from "react";
 import classnames from "classnames";
+import { RoutinePath, ValuesByParameter } from "../../types/Routines";
 import "./RoutineSelector.scss";
-import { ParameterType, RoutinePath, ValuesByParameter } from "../../types/Routines";
 
 type StyledButtonProps = PropsWithChildren<{
   id: string;
@@ -64,7 +64,7 @@ export function RoutineSelector({ paths, valuesByParameter }: RoutineSelectorPro
         setCurrentRowIndex(id => id + 1);
       }
     },
-    [currentRowIndex, pathName, pathsByPathName],
+    [currentRowIndex, pathName, pathsByPathName, paths, valuesByParameter],
   );
 
   return (
