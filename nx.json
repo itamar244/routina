@@ -28,6 +28,9 @@
     "routina-app-e2e": {
       "tags": [],
       "implicitDependencies": ["routina-app"]
+    },
+    "models": {
+      "tags": []
     }
   }
 }

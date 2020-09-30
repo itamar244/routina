@@ -1,6 +1,13 @@
-import React, { MouseEventHandler, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  MouseEventHandler,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import classnames from "classnames";
-import { RoutineInfo, RoutinePath, ValuesByParameter } from "../../types/Routines";
+import { RoutineInfo, RoutinePath, ValuesByParameter } from "@routina/models";
 import "./RoutineSelector.scss";
 
 type StyledButtonProps = PropsWithChildren<{
@@ -104,7 +111,7 @@ export function RoutineSelector({
       {pathName &&
         pathsByPathName[pathName].map((parameter, i) => (
           <div key={i} className={classnames({ "row-hidden": currentRowIndex !== i })}>
-            {valuesByParameter[parameter].map(({name: column}) => {
+            {valuesByParameter[parameter].map(({ name: column }) => {
               const isSelected = selectedNodes[parameter] === column;
               return (
                 <StyledButton key={column} id={column} isSelected={isSelected}>

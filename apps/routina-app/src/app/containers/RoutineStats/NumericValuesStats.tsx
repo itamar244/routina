@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
-import { Routine } from "../../types/Routines";
+import { Routine } from "@routina/models";
 import { groupBy, keyBy, mapValues } from "../../utils";
 
 function summarizeValuesByDate(routines: Routine[], parameterNames: string[]) {

@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-
-import { RoutineSelector } from "./containers/RoutineSelector";
-import { RoutineStats } from "./containers/RoutineStats";
-import { useStorageState } from "./hooks/useStorageState";
 import type {
   ParameterType,
   Routine,
   RoutineInfo,
   RoutinePath,
   ValuesByParameter,
-} from "./types/Routines";
+} from "@routina/models";
+
+import { RoutineSelector } from "./containers/RoutineSelector";
+import { useStorageState } from "./hooks/useStorageState";
 import logo from "./logo.png";
 import "./App.scss";
 import { NumericValuesStats } from "./containers/RoutineStats/NumericValuesStats";

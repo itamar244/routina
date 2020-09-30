@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-import { Routine } from "../../types/Routines";
+import { Routine } from "@routina/models";
 
 export interface RoutineStatsProps {
   routines: Routine[];
