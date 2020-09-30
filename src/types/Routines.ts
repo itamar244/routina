@@ -5,4 +5,14 @@ export interface RoutinePath {
   to: ParameterType[];
 }
 
-export type ValuesByParameter = Record<ParameterType, string[]>;
+export type ValuesByParameter = Record<ParameterType, { name: string; value: any }[]>;
+
+export interface RoutineInfo {
+  routineName: string;
+  parameters: Record<string, any>;
+}
+
+export interface Routine {
+  info: RoutineInfo;
+  date: Date;
+}

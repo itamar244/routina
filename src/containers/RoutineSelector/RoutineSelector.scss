@@ -1,20 +1,28 @@
-.drag-option {
-  user-select: none;
-}
+.routine-selectors {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-.button-containers > div {
-  margin-bottom: 100px;
+  & > div {
+    margin-bottom: 100px;
+  }
 }
 
 .item-button {
   background-color: transparent;
   border: 1 solid black;
+  border-radius: 6px;
   outline: none;
   box-shadow: none;
   border-style: solid;
+  margin: 3px 15px;
+  padding: 5px;
+  transition: padding 0.2s, margin 0.2s;
 
   &.selected {
     border-color: lightgreen;
+    margin: 0 15px;
+    padding: 8px;
   }
 
   .row-hidden &:not(.selected) {
