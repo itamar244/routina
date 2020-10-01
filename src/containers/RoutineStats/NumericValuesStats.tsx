@@ -19,12 +19,12 @@ function summarizeValuesByDate(routines: Routine[], parameterNames: string[]) {
   return Object.entries(reduced).map(([date, value]) => ({ name: date, ...value }));
 }
 
-export interface RoutineStatsProps {
+export interface NumericValuesStatsProps {
   routines: Routine[];
   selectedRoutineName: string;
 }
 
-export function NumericValuesStats({ routines, selectedRoutineName }: RoutineStatsProps) {
+export function NumericValuesStats({ routines, selectedRoutineName }: NumericValuesStatsProps) {
   const currentRoutines = useMemo(
     () => routines.filter(routine => routine.info.routineName === selectedRoutineName),
     [routines, selectedRoutineName],

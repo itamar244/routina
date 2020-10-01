@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 
 import { RoutineSelector } from "./containers/RoutineSelector";
+import { NumericValuesStats, SumParameterValuesStats } from "./containers/RoutineStats";
 import { useStorageState } from "./hooks/useStorageState";
 import type {
   ParameterType,
@@ -12,7 +13,6 @@ import type {
 } from "./types/Routines";
 import logo from "./logo.png";
 import "./App.scss";
-import { NumericValuesStats } from "./containers/RoutineStats/NumericValuesStats";
 
 const paths: RoutinePath[] = [
   { from: "meals", to: ["healthinnes", "amounts"] as ParameterType[] },
@@ -64,6 +64,12 @@ export default function App() {
             <Route path="/stats">
               <NumericValuesStats routines={routines} selectedRoutineName="meals" />
               <NumericValuesStats routines={routines} selectedRoutineName="pisses" />
+              <SumParameterValuesStats
+                routines={routines}
+                selectedRoutineName="meals"
+                valuesByParameter={valuesByParameter}
+                parameterType="amounts"
+              />
             </Route>
             <Route path="/">
               <RoutineSelector

@@ -1,1 +1,2 @@
-export * from "./RoutineStats";
+export * from "./NumericValuesStats";
+export * from "./SumParameterValuesStats";
