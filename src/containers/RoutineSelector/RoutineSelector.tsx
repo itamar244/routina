@@ -89,9 +89,9 @@ export function RoutineSelector({
   return (
     <section
       className="routine-selectors"
-      onMouseMove={onHover}
-      onMouseDown={startCapture}
-      onMouseUp={stopCapture}
+      onPointerMove={onHover}
+      onPointerDown={startCapture}
+      onPointerUp={stopCapture}
     >
       <div className={classnames({ "row-hidden": pathName })}>
         {paths.map(path => (
