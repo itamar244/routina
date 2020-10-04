@@ -1,5 +1,13 @@
 import React, { useMemo } from "react";
-import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { ParameterType, Routine, ValuesByParameter } from "../../types/Routines";
 import { groupBy, keyBy, mapValues } from "../../utils";
 
@@ -42,18 +50,16 @@ export function SumParameterValuesStats({
   );
 
   return (
-    <LineChart
-      width={500}
-      height={300}
-      data={summarizeValuesByDate(currentRoutines, parameterType, valuesByParameter)}
-    >
-      <Legend />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-      <Line type="monotone" dataKey={valuesByParameter[parameterType][0].name} stroke="#8884d8" />
-      <Line type="monotone" dataKey={valuesByParameter[parameterType][1].name} stroke="#82ca9d" />
-      <Line type="monotone" dataKey={valuesByParameter[parameterType][2].name} stroke="#82ca9d" />
-    </LineChart>
+    <ResponsiveContainer height={300} width="90%">
+      <LineChart data={summarizeValuesByDate(currentRoutines, parameterType, valuesByParameter)}>
+        <Legend />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+        <Line type="monotone" dataKey={valuesByParameter[parameterType][0].name} stroke="#8884d8" />
+        <Line type="monotone" dataKey={valuesByParameter[parameterType][1].name} stroke="#82ca9d" />
+        <Line type="monotone" dataKey={valuesByParameter[parameterType][2].name} stroke="#82ca9d" />
+      </LineChart>
+    </ResponsiveContainer>
   );
 }

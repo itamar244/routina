@@ -1,5 +1,13 @@
 import React, { useMemo } from "react";
-import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { Routine } from "../../types/Routines";
 import { groupBy, keyBy, mapValues } from "../../utils";
 
@@ -37,18 +45,16 @@ export function NumericValuesStats({ routines, selectedRoutineName }: NumericVal
   return (
     <>
       <h3 style={{ textAlign: "center" }}>{selectedRoutineName} per day</h3>
-      <LineChart
-        width={500}
-        height={300}
-        data={summarizeValuesByDate(currentRoutines, parameterNames)}
-      >
-        <Legend></Legend>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-        <Line type="monotone" dataKey={parameterNames[0]} stroke="#8884d8" />
-        <Line type="monotone" dataKey={parameterNames[1]} stroke="#82ca9d" />
-      </LineChart>
+      <ResponsiveContainer height={300} width="90%">
+        <LineChart height={300} data={summarizeValuesByDate(currentRoutines, parameterNames)}>
+          <Legend></Legend>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+          <Line type="monotone" dataKey={parameterNames[0]} stroke="#8884d8" />
+          <Line type="monotone" dataKey={parameterNames[1]} stroke="#82ca9d" />
+        </LineChart>
+      </ResponsiveContainer>
     </>
   );
 }
