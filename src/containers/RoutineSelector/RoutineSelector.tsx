@@ -1,4 +1,11 @@
-import React, { MouseEventHandler, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  PropsWithChildren,
+  TouchEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import classnames from "classnames";
 import { RoutineInfo, RoutinePath, ValuesByParameter } from "../../types/Routines";
 import "./RoutineSelector.scss";
@@ -22,9 +29,11 @@ function StyledButton({ id, children, isSelected }: StyledButtonProps) {
 function useCapture() {
   const [capturing, setCapturing] = useState(false);
   const startCapture = useCallback(() => {
+    console.log("setCapturing(true)");
     setCapturing(true);
   }, [setCapturing]);
   const stopCapture = useCallback(() => {
+    console.log("setCapturing(false)");
     setCapturing(false);
   }, [setCapturing]);
 
@@ -51,9 +60,11 @@ export function RoutineSelector({
     [paths],
   );
 
-  const onHover: MouseEventHandler = useCallback(
+  const onHover: TouchEventHandler = useCallback(
     event => {
-      const itemId = (event.target as HTMLElement).dataset?.itemId;
+      const point = event.touches[0];
+      const element = document.elementFromPoint(point.clientX, point.clientY) as HTMLElement;
+      const itemId = element?.dataset?.itemId;
 
       if (itemId == null || !capturing) {
         return;
@@ -89,7 +100,7 @@ export function RoutineSelector({
   return (
     <section
       className="routine-selectors"
-      onPointerMove={onHover}
+      onTouchMove={onHover}
       onPointerDown={startCapture}
       onPointerUp={stopCapture}
     >
@@ -104,8 +115,8 @@ export function RoutineSelector({
       {pathName &&
         pathsByPathName[pathName].map((parameter, i) => (
           <div key={i} className={classnames({ "row-hidden": currentRowIndex !== i })}>
-            {valuesByParameter[parameter].map(({name: column}) => {
-              const isSelected = selectedNodes[parameter] === column;
+            {valuesByParameter[parameter].map(({ name: column, value }) => {
+              const isSelected = selectedNodes[parameter] === value;
               return (
                 <StyledButton key={column} id={column} isSelected={isSelected}>
                   {column}
